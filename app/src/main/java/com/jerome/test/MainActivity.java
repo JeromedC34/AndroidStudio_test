@@ -1,11 +1,29 @@
 package com.jerome.test;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,63 +45,135 @@ public class MainActivity extends AppCompatActivity {
         textView5.setText("Check brackets (" + strBrackets + ")? " + String.valueOf(checkBrackets(strBrackets)) + "\n");
         String strToScramble = "les lapins bleus ont mangé toutes les carottes";
         TextView textView6 = (TextView) findViewById(R.id.text6);
-        textView6.setText("Text to scamble (" + strToScramble + ")? " + String.valueOf(scrambleTextWords(strToScramble)) + "\n");
+        textView6.setText("Text to scramble (" + strToScramble + ")? " + String.valueOf(scrambleTextWords(strToScramble)) + "\n");
+        int nbMaxFibonacci = 9;
+        TextView textView7 = (TextView) findViewById(R.id.text7);
+        textView7.setText("Fibonacci iterative (" + nbMaxFibonacci + ")? " + String.valueOf(getFibonacciSeriesIte(nbMaxFibonacci)) + "\n");
+        TextView textView8 = (TextView) findViewById(R.id.text8);
+        textView8.setText("Fibonacci recursive (" + nbMaxFibonacci + ")? " + String.valueOf(getFibonacciSeriesRec(nbMaxFibonacci)) + "\n");
+        TextView textView9 = (TextView) findViewById(R.id.text9);
+
+        StringBuffer result9 = new StringBuffer("");
+        List<String> stringList = new ArrayList<>();
+        stringList.add("une chaîne");
+        stringList.add("une chaîne bis");
+        stringList.set(1, "abcde");
+        Map<String, Object> map = new HashMap<>();
+        map.put("noel", new Date("24 dec 2016"));
+        map.put("fete nationale", new Date("14 jul 2017"));
+
+        for (String key : map.keySet()) {
+            result9.append("\nà la clé " + key + " est associé " + map.get(key).toString());
+        }
+
+        textView9.setText("List + Map : " + stringList.toString() + " / " + result9 + "\n");
+
+        Intervalle i1 = new Intervalle(0,10);
+        Intervalle i2 = new Intervalle(5,25);
+        TextView textView10 = (TextView) findViewById(R.id.text10);
+        textView10.setText("i1 : " + i1 + "\n");
+        TextView textView11 = (TextView) findViewById(R.id.text11);
+        textView11.setText("i2 : " + i2 + "\n");
+        TextView textView12 = (TextView) findViewById(R.id.text12);
+        textView12.setText("i1.intersection(i2) = " + i1.intersection(i2) + "\n");
+        TextView textView13 = (TextView) findViewById(R.id.text13);
+        textView13.setText("i1.union(i2) = " + i1.union(i2) + "\n");
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    public String getFibonacciSeriesIte(int nbMax) {
+        StringBuilder result = new StringBuilder("");
+        int twoBefore = 1;
+        int oneBefore = 1;
+        int currentValue = 0;
+        if (nbMax > 0) {
+            for (int i = 1; i <= nbMax; i++) {
+                if (i == 1 || i == 2) {
+                    result.append("1 ");
+                } else {
+                    currentValue = twoBefore + oneBefore;
+                    result.append(currentValue + " ");
+                    twoBefore = oneBefore;
+                    oneBefore = currentValue;
+                }
+            }
+        } else {
+            return "n/a";
+        }
+        return result.toString();
+    }
+
+    public String getFibonacciSeriesRec(int nbMax) {
+        if (nbMax == 1) {
+            return "1 ";
+        } else if (nbMax == 2) {
+            return getFibonacciSeriesRec(1) + "1 ";
+        } else if (nbMax > 2) {
+            return getFibonacciSeriesRec(nbMax - 1) + (getFibonacci(nbMax - 1) + getFibonacci(nbMax - 2)) + " ";
+        } else {
+            return "0";
+        }
+    }
+
+    public int getFibonacci(int nbMax) {
+        if (nbMax == 1 || nbMax == 2) {
+            return 1;
+        } else if (nbMax > 2) {
+            return (getFibonacci(nbMax - 1) + getFibonacci(nbMax - 2));
+        } else {
+            return 0;
+        }
     }
 
     // get a string with each word (separated only by space) scrambled
-    public String scrambleTextWords(String mot) {
-        // result string
+    public String scrambleTextWords(String aString) {
         StringBuilder result = new StringBuilder("");
         // current word to be scrambled when complete
-        StringBuilder unMot = new StringBuilder("");
-        // for each input character
-        for (int i = 0; i < mot.length(); i++) {
+        StringBuilder aWord = new StringBuilder("");
+        for (int i = 0; i < aString.length(); i++) {
             // if there is a space it means a new word may have ended (or heading space case)
-            if (mot.charAt(i) == ' ') {
+            if (aString.charAt(i) == ' ') {
                 // if a word had started it is now ended
-                if (!unMot.equals("")) {
+                if (!(aWord.toString().equals(""))) {
                     // append the scrambled word to the result
-                    result.append(scrambleString(unMot.toString()) + " ");
-                // the space is added to the result (no current word)
+                    result.append(scrambleString(aWord.toString())).append(" ");
+                    // the current word is emptied
+                    aWord.delete(0, aWord.length() - 1);
                 } else {
+                    // the space is added to the result (no current word)
                     result.append(' ');
                 }
-                // the current word is emptied
-                unMot = new StringBuilder("");
             } else {
                 // the current word is appended with the current character
-                unMot.append(mot.charAt(i));
+                aWord.append(aString.charAt(i));
             }
         }
         // if there is still a current word (string not finishing by space)
-        if (!unMot.equals("")) {
+        if (!(aWord.toString().equals(""))) {
             // append the scrambled word to the result
-            result.append(scrambleString(unMot.toString()));
+            result.append(scrambleString(aWord.toString()));
         }
-        // return the result as a string
         return result.toString();
     }
 
     // change the order of characters in a string
-    private String scrambleString(String mot) {
-        // result string
+    private String scrambleString(String aString) {
         StringBuilder result = new StringBuilder("");
         // this will be modified by removing each character already used
-        StringBuilder tmp_result = new StringBuilder(mot);
-        // random object
-        java.util.Random rand = new java.util.Random();
-        // random number
-        int nombreAleatoire = 0;
-        // for each input character
-        for (int i = 0; i < mot.length(); i++) {
-            // get a new random offset in the remaining characters
-            nombreAleatoire = rand.nextInt(tmp_result.length());
-            // add the character at the random offset to the result
-            result.append(tmp_result.charAt(nombreAleatoire));
-            // remove the used random character
-            tmp_result.deleteCharAt(nombreAleatoire);
+        StringBuilder result_tmp = new StringBuilder(aString);
+        Random rand = new Random();
+        int randomInt;
+        for (int i = 0; i < aString.length(); i++) {
+            // get a new random character index in the remaining ones
+            randomInt = rand.nextInt(result_tmp.length());
+            // add the character at the random index to the result
+            result.append(result_tmp.charAt(randomInt));
+            // remove the used character
+            result_tmp.deleteCharAt(randomInt);
         }
-        // return the result as a string
         return result.toString();
     }
 
@@ -100,27 +190,27 @@ public class MainActivity extends AppCompatActivity {
                 // check if at least 1 bracket has been opened
                 if (nbOpenedBrackets > 0) {
                     nbOpenedBrackets--;
-                // else there has been a problem, exit the loop
+                    // else there has been a problem, exit the loop
                 } else {
                     result = false;
                     break;
                 }
             }
         }
-        // there are nbOpenedBrackets closing brackett missing
+        // there are nbOpenedBrackets closing bracket missing
         if (nbOpenedBrackets > 0) {
             result = false;
         }
         return result;
     }
 
-    public String autoOverallTrim(String mot) {
-        return mot.trim().replaceAll("\\s+", " ");
+    public String autoOverallTrim(String aString) {
+        return aString.trim().replaceAll("\\s+", " ");
     }
 
-    public String manualOverallTrim(String mot) {
+    public String manualOverallTrim(String aString) {
         StringBuilder result = new StringBuilder("");
-        StringBuilder result_tmp = new StringBuilder(manualLTrim(manualRTrim(mot)));
+        StringBuilder result_tmp = new StringBuilder(manualLTrim(manualRTrim(aString)));
         boolean testMultipleSpaces = false;
         for (int i = 0; i < result_tmp.length(); i++) {
             if (result_tmp.charAt(i) == ' ') {
@@ -136,37 +226,73 @@ public class MainActivity extends AppCompatActivity {
         return result.toString();
     }
 
-    public String manualLTrim(String mot) {
-        StringBuilder result = new StringBuilder(mot);
+    public String manualLTrim(String aString) {
+        StringBuilder result = new StringBuilder(aString);
         while (result.charAt(0) == ' ') {
             result.deleteCharAt(0);
         }
         return result.toString();
     }
 
-    public String manualRTrim(String mot) {
-        StringBuilder result = new StringBuilder(mot);
+    public String manualRTrim(String aString) {
+        StringBuilder result = new StringBuilder(aString);
         while (result.charAt(result.length() - 1) == ' ') {
             result.deleteCharAt(result.length() - 1);
         }
         return result.toString();
     }
 
-    public boolean isPalindrome(String mot) {
+    public boolean isPalindrome(String aString) {
         boolean result = true;
-        String stringLower = mot.toLowerCase();
-        int longueur = stringLower.length();
-        for (int i = longueur; i > longueur / 2; i--) {
-            result = result && (stringLower.charAt(i - 1) == stringLower.charAt(longueur - i));
+        String stringLower = aString.toLowerCase();
+        int aLength = stringLower.length();
+        for (int i = aLength; i > aLength / 2; i--) {
+            result = result && (stringLower.charAt(i - 1) == stringLower.charAt(aLength - i));
         }
         return result;
     }
 
-    public String reverse(String mot) {
+    public String reverse(String aString) {
         StringBuilder result = new StringBuilder("");
-        for (int i = mot.length(); i > 0; i--) {
-            result.append(mot.charAt(i - 1));
+        for (int i = aString.length(); i > 0; i--) {
+            result.append(aString.charAt(i - 1));
         }
         return result.toString();
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
     }
 }
