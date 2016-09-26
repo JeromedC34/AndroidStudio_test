@@ -1,16 +1,13 @@
 package com.jerome.test;
 
-/**
- * Created by Human Booster on 26/09/2016.
- */
+class Triangle extends Shape {
+    private double height;
+    private double base;
 
-public class Triangle extends Shape {
-    double height;
-    double base;
-
-    public Triangle(double height, double base) {
+    Triangle(double height, double base) {
         this.height = height;
         this.base = base;
+        computeArea();
     }
 
     @Override
@@ -18,5 +15,4 @@ public class Triangle extends Shape {
         area = (height * base) / 2;
         return area;
     }
-
 }

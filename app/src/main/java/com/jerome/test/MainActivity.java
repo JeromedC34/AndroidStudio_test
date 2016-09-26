@@ -3,6 +3,7 @@ package com.jerome.test;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
@@ -11,6 +12,7 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,33 +27,40 @@ public class MainActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
 
+    private void printSeparator(TextView textView) {
+        textView.append("----------------------------------------------------------------------\n");
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String testPalindrome1 = "Hello World!";
-        TextView textView1 = (TextView) findViewById(R.id.text1);
-        textView1.setText("Reverse (" + testPalindrome1 + ") : " + reverse(testPalindrome1) + "\n");
-        String testPalindrome2 = "Laval";
-        TextView textView2 = (TextView) findViewById(R.id.text2);
-        textView2.setText("Is palindrome (" + testPalindrome2 + ")? " + String.valueOf(isPalindrome(testPalindrome2)) + "\n");
-        String testTrim = "       1   2    3        4       5       ";
-        TextView textView3 = (TextView) findViewById(R.id.text3);
-        textView3.setText("ManualTrim (" + testTrim + ")? >>>" + manualOverallTrim(testTrim) + "<<<" + "\n");
-        TextView textView4 = (TextView) findViewById(R.id.text4);
-        textView4.setText("AutoTrim (" + testTrim + ")? >>>" + autoOverallTrim(testTrim) + "<<<" + "\n");
-        String strBrackets = "((toto)())";
-        TextView textView5 = (TextView) findViewById(R.id.text5);
-        textView5.setText("Check brackets (" + strBrackets + ")? " + String.valueOf(checkBrackets(strBrackets)) + "\n");
-        String strToScramble = "les lapins bleus ont mangé toutes les carottes";
-        TextView textView6 = (TextView) findViewById(R.id.text6);
-        textView6.setText("Text to scramble (" + strToScramble + ")? " + String.valueOf(scrambleTextWords(strToScramble)) + "\n");
-        int nbMaxFibonacci = 9;
-        TextView textView7 = (TextView) findViewById(R.id.text7);
-        textView7.setText("Fibonacci iterative (" + nbMaxFibonacci + ")? " + String.valueOf(getFibonacciSeriesIte(nbMaxFibonacci)) + "\n");
-        TextView textView8 = (TextView) findViewById(R.id.text8);
-        textView8.setText("Fibonacci recursive (" + nbMaxFibonacci + ")? " + String.valueOf(getFibonacciSeriesRec(nbMaxFibonacci)) + "\n");
-        TextView textView9 = (TextView) findViewById(R.id.text9);
+        TextView textView = (TextView) findViewById(R.id.text);
+
+        Shape ellipse = new Ellipse(10, 100);
+        textView.append("area = " + ellipse.getArea() + "\n");
+        Shape circle = new Circle(100);
+        textView.append("area = " + circle.computeArea() + "\n");
+        Shape rectangle = new Rectangle(10, 100);
+        textView.append("area = " + rectangle.computeArea() + "\n");
+        Shape square = new Square(100);
+        textView.append("area = " + square.computeArea() + "\n");
+        Shape triangle = new Triangle(10, 100);
+        textView.append("area = " + triangle.computeArea() + "\n");
+        printSeparator(textView);
+
+        try {
+            Intervalle i0 = new Intervalle(100, 10);
+            Intervalle i1 = new Intervalle(0, 10);
+            Intervalle i2 = new Intervalle(5, 25);
+            textView.append("i1 : " + i1 + "\n");
+            textView.append("i2 : " + i2 + "\n");
+            textView.append("i1.intersection(i2) = " + i1.intersection(i2) + "\n");
+            textView.append("i1.union(i2) = " + i1.union(i2) + "\n");
+        } catch (IntervalleBadParameters e) {
+            Log.e("Pb exercice Intervalle", e.toString());
+            textView.append("Bad parameters / creation of Intervalle (" + e.toString() + ")\n");
+        }
+        printSeparator(textView);
 
         StringBuilder result9 = new StringBuilder("");
         List<String> stringList = new ArrayList<>();
@@ -59,25 +68,51 @@ public class MainActivity extends AppCompatActivity {
         stringList.add("une chaîne bis");
         stringList.set(1, "abcde");
         Map<String, Object> map = new HashMap<>();
-        map.put("noel", new Date("24 dec 2016"));
-        map.put("fete nationale", new Date("14 jul 2017"));
-
+        Date myDate;
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2016);
+        cal.set(Calendar.MONTH, Calendar.DECEMBER);
+        cal.set(Calendar.DAY_OF_MONTH, 25);
+        myDate = cal.getTime();
+        map.put("noel", myDate);
+        cal.set(Calendar.YEAR, 2017);
+        cal.set(Calendar.MONTH, Calendar.JULY);
+        cal.set(Calendar.DAY_OF_MONTH, 14);
+        myDate = cal.getTime();
+        map.put("fete nationale", myDate);
+        //map.put("noel", new Date("24 dec 2016"));
+        //map.put("fete nationale", new Date("14 jul 2017"));
         for (String key : map.keySet()) {
             result9.append("\nà la clé ").append(key).append(" est associé ").append(map.get(key).toString());
         }
+        textView.append("List + Map : " + stringList.toString() + " / " + result9 + "\n");
+        printSeparator(textView);
 
-        textView9.setText("List + Map : " + stringList.toString() + " / " + result9 + "\n");
+        int nbMaxFibonacci = 9;
+        textView.append("Fibonacci iterative (" + nbMaxFibonacci + ")? " + String.valueOf(getFibonacciSeriesIte(nbMaxFibonacci)) + "\n");
+        textView.append("Fibonacci recursive (" + nbMaxFibonacci + ")? " + String.valueOf(getFibonacciSeriesRec(nbMaxFibonacci)) + "\n");
+        printSeparator(textView);
 
-        Intervalle i1 = new Intervalle(0,10);
-        Intervalle i2 = new Intervalle(5,25);
-        TextView textView10 = (TextView) findViewById(R.id.text10);
-        textView10.setText("i1 : " + i1 + "\n");
-        TextView textView11 = (TextView) findViewById(R.id.text11);
-        textView11.setText("i2 : " + i2 + "\n");
-        TextView textView12 = (TextView) findViewById(R.id.text12);
-        textView12.setText("i1.intersection(i2) = " + i1.intersection(i2) + "\n");
-        TextView textView13 = (TextView) findViewById(R.id.text13);
-        textView13.setText("i1.union(i2) = " + i1.union(i2) + "\n");
+        String strToScramble = "les lapins bleus ont mangé toutes les carottes";
+        textView.append("Text to scramble (" + strToScramble + ")? " + String.valueOf(scrambleTextWords(strToScramble)) + "\n");
+        printSeparator(textView);
+
+        String strBrackets = "((toto)())";
+        textView.append("Check brackets (" + strBrackets + ")? " + String.valueOf(checkBrackets(strBrackets)) + "\n");
+        printSeparator(textView);
+
+        String testTrim = "       1   2    3        4       5       ";
+        textView.append("ManualTrim (" + testTrim + ")? >>>" + manualOverallTrim(testTrim) + "<<<" + "\n");
+        textView.append("AutoTrim (" + testTrim + ")? >>>" + autoOverallTrim(testTrim) + "<<<" + "\n");
+        printSeparator(textView);
+
+        String testPalindrome2 = "Laval";
+        textView.append("Is palindrome (" + testPalindrome2 + ")? " + String.valueOf(isPalindrome(testPalindrome2)) + "\n");
+        printSeparator(textView);
+
+        String testPalindrome1 = "Hello World!";
+        textView.append("Reverse (" + testPalindrome1 + ") : " + reverse(testPalindrome1) + "\n");
+        printSeparator(textView);
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.

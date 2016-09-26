@@ -1,16 +1,13 @@
 package com.jerome.test;
 
-/**
- * Created by Human Booster on 26/09/2016.
- */
+class Ellipse extends Shape {
+    private double smallRay;
+    private double largeRay;
 
-public class Ellipse extends Shape {
-    double smallRay;
-    double largeRay;
-
-    public Ellipse(double smallRay, double largeRay) {
+    Ellipse(double smallRay, double largeRay) {
         this.smallRay = smallRay;
         this.largeRay = largeRay;
+        computeArea();
     }
 
     @Override

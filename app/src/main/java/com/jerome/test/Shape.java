@@ -1,15 +1,11 @@
 package com.jerome.test;
 
-/**
- * Created by Human Booster on 26/09/2016.
- */
-
-public abstract class Shape {
-    protected double area;
+abstract class Shape {
+    double area;
 
     public abstract double computeArea();
 
-    public double getArea() {
+    double getArea() {
         return area;
     }
 }

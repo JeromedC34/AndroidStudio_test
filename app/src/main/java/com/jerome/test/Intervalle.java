@@ -1,25 +1,32 @@
 package com.jerome.test;
 
-public class Intervalle {
+class IntervalleBadParameters extends IllegalArgumentException {
+    IntervalleBadParameters() {
+        super("inf greater than sup!");
+    }
+}
+
+class Intervalle {
     private int inf;
     private int sup;
 
-    public Intervalle(int inf, int sup) {
-        if (inf < sup) {
+    Intervalle(int inf, int sup) {
+        if (inf <= sup) {
             this.inf = inf;
             this.sup = sup;
         } else {
-            this.inf = inf;
-            this.sup = sup;
+            this.inf = sup;
+            this.sup = inf;
+            throw new IntervalleBadParameters();
         }
     }
 
     public int getBorneInf() {
-        return inf;
+        return getInf();
     }
 
     public int getBorneSup() {
-        return sup;
+        return getSup();
     }
 
     public boolean contient(int x) {
@@ -81,6 +88,7 @@ public class Intervalle {
     }
 
     public String toString() {
+
         return "[" + inf + ", " + sup + "]";
     }
 

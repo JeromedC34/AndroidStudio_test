@@ -1,16 +1,13 @@
 package com.jerome.test;
 
-/**
- * Created by Human Booster on 26/09/2016.
- */
+class Rectangle extends Shape {
+    private double height;
+    private double width;
 
-public class Rectangle extends Shape {
-    double height;
-    double width;
-
-    public Rectangle(double height, double width) {
+    Rectangle(double height, double width) {
         this.height = height;
         this.width = width;
+        computeArea();
     }
 
     @Override
