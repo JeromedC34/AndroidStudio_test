@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         textView8.setText("Fibonacci recursive (" + nbMaxFibonacci + ")? " + String.valueOf(getFibonacciSeriesRec(nbMaxFibonacci)) + "\n");
         TextView textView9 = (TextView) findViewById(R.id.text9);
 
-        StringBuffer result9 = new StringBuffer("");
+        StringBuilder result9 = new StringBuilder("");
         List<String> stringList = new ArrayList<>();
         stringList.add("une chaîne");
         stringList.add("une chaîne bis");
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         map.put("fete nationale", new Date("14 jul 2017"));
 
         for (String key : map.keySet()) {
-            result9.append("\nà la clé " + key + " est associé " + map.get(key).toString());
+            result9.append("\nà la clé ").append(key).append(" est associé ").append(map.get(key).toString());
         }
 
         textView9.setText("List + Map : " + stringList.toString() + " / " + result9 + "\n");
@@ -88,14 +88,14 @@ public class MainActivity extends AppCompatActivity {
         StringBuilder result = new StringBuilder("");
         int twoBefore = 1;
         int oneBefore = 1;
-        int currentValue = 0;
+        int currentValue;
         if (nbMax > 0) {
             for (int i = 1; i <= nbMax; i++) {
                 if (i == 1 || i == 2) {
                     result.append("1 ");
                 } else {
                     currentValue = twoBefore + oneBefore;
-                    result.append(currentValue + " ");
+                    result.append(currentValue).append(" ");
                     twoBefore = oneBefore;
                     oneBefore = currentValue;
                 }

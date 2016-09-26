@@ -9,31 +9,47 @@ public class Compte {
     private double solde;
     private String num;
 
+    public Compte(Client client) {
+        this(client, 0);
+    }
+
+    public Compte(Client client, double solde) {
+        this.client = client;
+        this.solde = solde;
+    }
+
     public String getNum() {
         return num;
+    }
+
+    public void setNum(String num) {
+        this.num = num;
     }
 
     public double getSolde() {
         return solde;
     }
 
+    public void setSolde(double solde) {
+        this.solde = solde;
+    }
+
     public Client getClient() {
         return client;
     }
-    public Compte(Client client) {
+
+    public void setClient(Client client) {
         this.client = client;
-        this.solde = 0;
     }
-    public Compte(Client client, double solde) {
-        this.client = client;
-        this.solde = solde;
-    }
-    public void crédite(double montant) {
+
+    public void credite(double montant) {
         this.solde = this.solde + solde;
     }
-    public void dédite(double montant) {
+
+    public void dedite(double montant) {
         this.solde = this.solde - solde;
     }
+
     @Override
     public String toString() {
         return "Compte{" +
@@ -41,19 +57,5 @@ public class Compte {
                 ", solde=" + solde +
                 ", num=" + num +
                 '}';
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-
-
-    public void setSolde(double solde) {
-        this.solde = solde;
-    }
-
-    public void setNum(String num) {
-        this.num = num;
     }
 }
