@@ -15,6 +15,7 @@ public class Ellipse extends Shape {
 
     @Override
     public double computeArea() {
-        return smallRay * largeRay * Math.PI;
+        area = smallRay * largeRay * Math.PI;
+        return area;
     }
 }
