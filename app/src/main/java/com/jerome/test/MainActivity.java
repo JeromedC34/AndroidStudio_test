@@ -1,9 +1,13 @@
 package com.jerome.test;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
@@ -28,13 +32,34 @@ public class MainActivity extends AppCompatActivity {
     private GoogleApiClient client;
 
     private void printSeparator(TextView textView) {
-        textView.append("----------------------------------------------------------------------\n");
+        textView.append("----------------------------------------------------------------------------------\n");
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView textView = (TextView) findViewById(R.id.text);
+
+        final TextView textView = (TextView) findViewById(R.id.text);
+        final EditText editText = (EditText) findViewById(R.id.edit_text);
+        Button button = (Button) findViewById(R.id.button);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String inputText = editText.getText().toString();
+                textView.setText("");
+                textView.append("Is palindrome (" + inputText + ")? " + String.valueOf(isPalindrome(inputText)) + "\n");
+                printSeparator(textView);
+                textView.append("Reverse (" + inputText + ") : " + reverse(inputText) + "\n");
+                printSeparator(textView);
+                if (isPalindrome(inputText)) {
+                    textView.setBackgroundColor(Color.GREEN);
+                } else {
+                    textView.setBackgroundColor(Color.RED);
+                }
+            }
+        });
 
         Shape ellipse = new Ellipse(10, 100);
         textView.append("area = " + ellipse.getArea() + "\n");
