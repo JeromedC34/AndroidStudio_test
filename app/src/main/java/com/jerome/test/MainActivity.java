@@ -1,7 +1,6 @@
 package com.jerome.test;
 
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,11 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,12 +18,6 @@ import java.util.Map;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     private void printSeparator(TextView textView) {
         textView.append("----------------------------------------------------------------------------------\n");
@@ -74,24 +62,25 @@ public class MainActivity extends AppCompatActivity {
         printSeparator(textView);
 
         try {
-            Intervalle i0 = new Intervalle(100, 10);
-            Intervalle i1 = new Intervalle(0, 10);
-            Intervalle i2 = new Intervalle(5, 25);
+            Interval i0 = new Interval(100, 10);
+            Interval i1 = new Interval(0, 10);
+            Interval i2 = new Interval(5, 25);
+            textView.append("i0 : " + i0 + "\n");
             textView.append("i1 : " + i1 + "\n");
             textView.append("i2 : " + i2 + "\n");
             textView.append("i1.intersection(i2) = " + i1.intersection(i2) + "\n");
             textView.append("i1.union(i2) = " + i1.union(i2) + "\n");
-        } catch (IntervalleBadParameters e) {
-            Log.e("Pb exercice Intervalle", e.toString());
-            textView.append("Bad parameters / creation of Intervalle (" + e.toString() + ")\n");
+        } catch (IntervalBadParameters e) {
+            Log.e("Pb exercise Interval", e.toString());
+            textView.append("Bad parameters / creation of Interval (" + e.toString() + ")\n");
         }
         printSeparator(textView);
 
         StringBuilder result9 = new StringBuilder("");
         List<String> stringList = new ArrayList<>();
-        stringList.add("une chaîne");
-        stringList.add("une chaîne bis");
-        stringList.set(1, "abcde");
+        stringList.add("a string");
+        stringList.add("a string bis");
+        stringList.set(1, "alphabet");
         Map<String, Object> map = new HashMap<>();
         Date myDate;
         Calendar cal = Calendar.getInstance();
@@ -104,11 +93,11 @@ public class MainActivity extends AppCompatActivity {
         cal.set(Calendar.MONTH, Calendar.JULY);
         cal.set(Calendar.DAY_OF_MONTH, 14);
         myDate = cal.getTime();
-        map.put("fete nationale", myDate);
+        map.put("national day", myDate);
         //map.put("noel", new Date("24 dec 2016"));
-        //map.put("fete nationale", new Date("14 jul 2017"));
+        //map.put("national day", new Date("14 jul 2017"));
         for (String key : map.keySet()) {
-            result9.append("\nà la clé ").append(key).append(" est associé ").append(map.get(key).toString());
+            result9.append("\nto the key ").append(key).append(" is associated ").append(map.get(key).toString());
         }
         textView.append("List + Map : " + stringList.toString() + " / " + result9 + "\n");
         printSeparator(textView);
@@ -118,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         textView.append("Fibonacci recursive (" + nbMaxFibonacci + ")? " + String.valueOf(getFibonacciSeriesRec(nbMaxFibonacci)) + "\n");
         printSeparator(textView);
 
-        String strToScramble = "les lapins bleus ont mangé toutes les carottes";
+        String strToScramble = "the blue rabbits have eaten all the carrots";
         textView.append("Text to scramble (" + strToScramble + ")? " + String.valueOf(scrambleTextWords(strToScramble)) + "\n");
         printSeparator(textView);
 
@@ -138,10 +127,6 @@ public class MainActivity extends AppCompatActivity {
         String testPalindrome1 = "Hello World!";
         textView.append("Reverse (" + testPalindrome1 + ") : " + reverse(testPalindrome1) + "\n");
         printSeparator(textView);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     public String getFibonacciSeriesIte(int nbMax) {
@@ -320,39 +305,4 @@ public class MainActivity extends AppCompatActivity {
         return result.toString();
     }
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Main Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 }

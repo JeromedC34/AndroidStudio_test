@@ -1,23 +1,23 @@
 package com.jerome.test;
 
-class IntervalleBadParameters extends IllegalArgumentException {
-    IntervalleBadParameters() {
+class IntervalBadParameters extends IllegalArgumentException {
+    IntervalBadParameters() {
         super("inf greater than sup!");
     }
 }
 
-class Intervalle {
+class Interval {
     private int inf;
     private int sup;
 
-    Intervalle(int inf, int sup) {
+    Interval(int inf, int sup) {
         if (inf <= sup) {
             this.inf = inf;
             this.sup = sup;
         } else {
             this.inf = sup;
             this.sup = inf;
-            throw new IntervalleBadParameters();
+            throw new IntervalBadParameters();
         }
     }
 
@@ -33,21 +33,21 @@ class Intervalle {
         return (x >= inf) && (x <= sup);
     }
 
-    public boolean contient(Intervalle I) {
+    public boolean contient(Interval I) {
         return (I.getInf() >= inf) && (I.getSup() <= sup);
     }
 
-    public boolean estDisjointDe(Intervalle I) {
+    public boolean estDisjointDe(Interval I) {
         return (I.getSup() < inf) || (I.getInf() > sup);
     }
 
-    public boolean intersecte(Intervalle I) {
+    public boolean intersecte(Interval I) {
         return !estDisjointDe(I);
     }
 
-    public Intervalle intersection(Intervalle I) {
+    public Interval intersection(Interval I) {
         if (intersecte(I)) {
-            Intervalle result = new Intervalle(0, 0);
+            Interval result = new Interval(0, 0);
             if (inf < I.getInf()) {
                 result.setInf(I.getInf());
             } else {
@@ -64,9 +64,9 @@ class Intervalle {
         }
     }
 
-    public Intervalle union(Intervalle I) {
+    public Interval union(Interval I) {
         if (intersecte(I)) {
-            Intervalle result = new Intervalle(0, 0);
+            Interval result = new Interval(0, 0);
             if (inf < I.getInf()) {
                 result.setInf(inf);
             } else {
@@ -83,7 +83,7 @@ class Intervalle {
         }
     }
 
-    public boolean equals(Intervalle I) {
+    public boolean equals(Interval I) {
         return (inf == I.getInf()) && (sup == I.getSup());
     }
 
